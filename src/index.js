@@ -137,7 +137,7 @@ function createPopupWindow(time) {
 
   popupWindow.loadFile(path.join(__dirname, "pages", "popup.html"));
 
-  popupWindow.webContents.on("did-finish-load", () => {
-    popupWindow.webContents.send("set-time", time);
-  });
+  // popupWindow.webContents.on("did-finish-load", () => {
+  //   popupWindow.webContents.send("set-time", time);
+  // });
 }
