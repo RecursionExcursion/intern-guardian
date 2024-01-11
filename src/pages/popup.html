@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html>
-    <!DOCTYPE html>
-    <html lang="en">
+  <!DOCTYPE html>
+  <html lang="en">
     <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Pop-up Window</title>
     </head>
     <body>
-      <h1>Pop-up Window Content</h1>
+      <p>You have 30 seconds until your screen locks. Please look at your camera</p>
       <button onclick="closePopup()">Close Popup</button>
-    
+
       <script>
+        const { ipcRenderer } = require("electron");
+
+        function openPopupWindow(time) {
+          ipcRenderer.send("open-popup-window", time);
+        }
+
         function closePopup() {
-          const currentWindow = window.remote.getCurrentWindow();
+          const currentWindow = require("electron").remote.getCurrentWindow();
           currentWindow.close();
         }
       </script>
     </body>
-    </html>
-    
+  </html>
+</html>

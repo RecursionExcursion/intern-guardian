@@ -30,7 +30,6 @@
 // // Some APIs can only be used after this event occurs.
 // app.on('ready', createWindow);
 
-
 // /*
 
 // app.whenReady().then(() => {
@@ -73,9 +72,8 @@
 // });
 // main.js
 
-
-const { app, BrowserWindow, ipcMain } = require('electron');
-const path = require('path');
+const { app, BrowserWindow, ipcMain } = require("electron");
+const path = require("path");
 
 let mainWindow;
 
@@ -84,49 +82,62 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 
-  let child = new BrowserWindow({parent: mainWindow})
-  child.loadFile('./pages/popup.html'); 
-  child.show()
-
-
-
-  mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  mainWindow.loadFile(path.join(__dirname, "index.html"));
   mainWindow.webContents.openDevTools();
 };
 
 app.whenReady().then(() => {
   createWindow();
 
-  app.on('activate', () => {
+  app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
   });
 });
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
-ipcMain.on('lock-screen', () => {
-  require('./scripts/lockscreen.js')();
+ipcMain.on("lock-screen", () => {
+  require("./scripts/lockscreen.js")();
 });
 
-// exports.openPopup = () => {
-//   const popupWindow = new BrowserWindow({
-//     width: 400,
-//     height: 300,
-//     webPreferences: {
-//       nodeIntegration: true,
-//     },
-//   });
+ipcMain.on("open-popup-window", (time) => {
+  // Code to open the popup window
+  createPopupWindow(time);
+});
 
+let popupWindow;
 
-//   popupWindow.loadFile('popup.html');
-// };
+ipcMain.on("close-popup-window", () => {
+  // Code to close the popup window
+  if (popupWindow) {
+    popupWindow.close();
+    popupWindow = null;
+  }
+});
+
+function createPopupWindow(time) {
+  popupWindow = new BrowserWindow({
+    width: 400,
+    height: 150,
+    show: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+
+  popupWindow.loadFile(path.join(__dirname, "pages", "popup.html"));
+
+  popupWindow.webContents.on("did-finish-load", () => {
+    popupWindow.webContents.send("set-time", time);
+  });
+}

@@ -1,6 +1,6 @@
 const video = document.getElementById('video')
 
-const faceDectectionTimeInterval = 15000; //ms
+const faceDectectionTimeInterval = 1000; //ms
 
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri('../models'),
@@ -54,15 +54,24 @@ video.addEventListener('play', () => {
     if(faceDetected){
       console.log("I see you!")
       faceNotPresentCount = 0
+
+      //close pop up if open
+      window.electron.closePopupWindow()
+
     }else{
       faceNotPresentCount++
       console.log('Face not present '+faceNotPresentCount + ' times')
     }
     
-    if(faceNotPresentCount == 3){
-      console.log("Screen will lock in 10 seconds")
+    if(faceNotPresentCount == 10){
+
+
+      //Would love to pass in a var here but electron is an abomination that scorges the earth with convoluted process 
+      window.electron.openPopupWindow(30)
     }
-    if(faceNotPresentCount >= 5){
+    if(faceNotPresentCount >= 60){
+
+
       window.api.lockScreen()
       //Ends interval
       clearInterval(faceDetectionInterval)
