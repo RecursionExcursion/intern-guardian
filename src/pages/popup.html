@@ -9,19 +9,15 @@
       <title>Pop-up Window</title>
     </head>
     <body>
-      <p>You have 30 seconds until your screen locks. Please look at your camera</p>
-      <button onclick="closePopup()">Close Popup</button>
+      <p>
+        You have 30 seconds until your screen locks. Please look at your camera
+      </p>
 
       <script>
         const { ipcRenderer } = require("electron");
 
         function openPopupWindow(time) {
           ipcRenderer.send("open-popup-window", time);
-        }
-
-        function closePopup() {
-          const currentWindow = require("electron").remote.getCurrentWindow();
-          currentWindow.close();
         }
       </script>
     </body>
