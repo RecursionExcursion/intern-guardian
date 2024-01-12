@@ -2,6 +2,7 @@
 const video = document.getElementById("video");
 const startButton = document.getElementById("startButton");
 const stopButton = document.getElementById("stopButton");
+const canvas = document.getElementById("faceCanvas");
 
 let faceNotPresentCount = 0;
 const faceDectectionTimeInterval = 1000; //ms
@@ -24,15 +25,13 @@ function startVideo() {
     (stream) => (video.srcObject = stream),
     (err) => console.error(err)
   );
+  mapFaceToCanvas();
 }
 
-video.addEventListener("play", () => {
-  const canvas = faceapi.createCanvasFromMedia(video);
-  document.body.append(canvas);
-  const displaySize = { width: video.width, height: video.height };
+function mapFaceToCanvas() {
+  const displaySize = { width: canvas.width, height: canvas.height };
   faceapi.matchDimensions(canvas, displaySize);
 
-  //For testing, maybe....
   setInterval(async () => {
     const detections = await faceapi
       .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
@@ -45,10 +44,9 @@ video.addEventListener("play", () => {
     faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
     faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
   }, 100);
-});
+}
 
-
-function startFaceDetection(){
+function startFaceDetection() {
   faceDetectionInterval = setInterval(async () => {
     const detections = await faceapi
       .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
@@ -76,11 +74,14 @@ function startFaceDetection(){
     if (faceNotPresentCount >= 60) {
       window.api.lockScreen();
 
-      stopFaceDetection()
+      stopFaceDetection();
     }
+
+    console.log('Application Started')
   }, faceDectectionTimeInterval);
 }
 
 function stopFaceDetection() {
   clearInterval(faceDetectionInterval);
+  console.log("Application Stopped");
 }

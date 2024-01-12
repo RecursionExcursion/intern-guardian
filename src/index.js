@@ -128,8 +128,11 @@ ipcMain.on("close-popup-window", () => {
 function createPopupWindow(time) {
   popupWindow = new BrowserWindow({
     width: 400,
-    height: 150,
+    height: 200,
     show: true,
+    maximizable: false,
+    frame: false,
+    alwaysOnTop: true,
     webPreferences: {
       nodeIntegration: true,
     },
