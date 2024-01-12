@@ -3,11 +3,21 @@
 
 const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld("electron", {
-  openPopupWindow: (time) => {
-    ipcRenderer.send("open-popup-window", time);
-  },
-  closePopupWindow: function () {
-    ipcRenderer.send("close-popup-window");
-  },
-});
+function openPopupWindow() {
+  ipcRenderer.send("open-popup-window");
+}
+
+function closePopupWindow() {
+  ipcRenderer.send("close-popup-window");
+}
+
+async function openDialog() {
+  return await ipcRenderer.invoke("open-dialog", options);
+}
+
+let popUpBridge = {
+  openPopupWindow,
+  closePopupWindow,
+};
+
+contextBridge.exposeInMainWorld("popup", popUpBridge);

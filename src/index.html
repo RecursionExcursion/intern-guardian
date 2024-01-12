@@ -1,10 +1,8 @@
-<!--Index.html-->
-
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Hello World!</title>
+    <title>Intern Guardian</title>
     <link rel="stylesheet" href="index.css" />
     <script defer src="../face-api.min.js"></script>
     <script defer src="./scripts/video_faceapi.js"></script>
@@ -12,15 +10,16 @@
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body class="mainpage-body">
-    <div class="mainpage-div">
-      <div>
-        <span>
-          <button id="startButton">Start</button>
-          <button id="stopButton">Stop</button>
-          <button onclick="openGetFaceView()">Upload face</button>
-        </span>
+    <div class="wrapper-div">
+      <div class="button-container-div">
+        <button id="startButton">Start</button>
+        <button id="stopButton">Stop</button>
+        <button onclick="openGetFaceView()">Upload face</button>
       </div>
-      <div>
+      <div class="label-wrapper-div">
+        <label id="appStatusText">Application running</label>
+      </div>
+      <div class="canvas-wrapper-div">
         <video
           id="video"
           width="600"
@@ -29,7 +28,9 @@
           muted
           hidden
         ></video>
-        <canvas id="faceCanvas" width="600" height="400"></canvas>
+        <div>
+          <canvas id="faceCanvas"></canvas>
+        </div>
       </div>
     </div>
   </body>

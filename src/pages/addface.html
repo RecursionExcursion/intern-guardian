@@ -7,13 +7,17 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <script defer src="../scripts/navigation.js"></script>
+      <script defer src="../scripts/imagestore.js"></script>
+      <script defer src="../preload.js"></script>
       <link rel="stylesheet" href="../index.css" />
     </head>
     <body>
       <img src="../public/givemeyourface.gif" alt="GIF Image" />
-      <div class="wrapper-div">
+      <div class="button-container-div">
         <button onclick="openHomeView()">Home</button>
-
+      </div>
+      <button onclick="storeImageFile()">Image TEst</button>
+      <div class="form-wrapper-div">
         <form action="/upload" method="post" enctype="multipart/form-data">
           <label for="photo">Select a photo:</label>
           <input type="file" id="photo" name="photo" accept="image/*" />
