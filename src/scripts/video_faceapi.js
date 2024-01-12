@@ -1,7 +1,16 @@
+//Capturing DOM elements
 const video = document.getElementById("video");
+const startButton = document.getElementById("startButton");
+const stopButton = document.getElementById("stopButton");
 
+let faceNotPresentCount = 0;
 const faceDectectionTimeInterval = 1000; //ms
+let faceDetectionInterval;
 
+startButton.addEventListener("click", startFaceDetection);
+stopButton.addEventListener("click", stopFaceDetection);
+
+//Load AI models
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri("../models"),
   faceapi.nets.faceLandmark68Net.loadFromUri("../models"),
@@ -23,7 +32,7 @@ video.addEventListener("play", () => {
   const displaySize = { width: video.width, height: video.height };
   faceapi.matchDimensions(canvas, displaySize);
 
-  //For testing
+  //For testing, maybe....
   setInterval(async () => {
     const detections = await faceapi
       .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
@@ -36,10 +45,11 @@ video.addEventListener("play", () => {
     faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
     faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
   }, 100);
+});
 
-  let faceNotPresentCount = 0;
 
-  const faceDetectionInterval = setInterval(async () => {
+function startFaceDetection(){
+  faceDetectionInterval = setInterval(async () => {
     const detections = await faceapi
       .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
       .withFaceLandmarks()
@@ -66,7 +76,11 @@ video.addEventListener("play", () => {
     if (faceNotPresentCount >= 60) {
       window.api.lockScreen();
 
-      clearInterval(faceDetectionInterval);
+      stopFaceDetection()
     }
   }, faceDectectionTimeInterval);
-});
+}
+
+function stopFaceDetection() {
+  clearInterval(faceDetectionInterval);
+}
