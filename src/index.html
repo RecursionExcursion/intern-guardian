@@ -10,12 +10,28 @@
     <script defer src="./scripts/video_faceapi.js"></script>
     <link rel="stylesheet" href="./index.css" />
   </head>
-  <body>
-    <span>
-      <button id="startButton">Start</button>
-      <button id="stopButton">Stop</button>
-    </span>
-
-    <video id="video" width="600" height="400" autoplay muted></video>
+  <body class="mainpage-body">
+    <div class="mainpage-div">
+      <div>
+        <span>
+          <button class="mainpage-button" id="startButton">Start</button>
+          <button class="mainpage-button" id="stopButton">Stop</button>
+        </span>
+      </div>
+      <div>
+        Smile!
+      </div>
+      <div>
+        <video
+          id="video"
+          width="600"
+          height="400"
+          autoplay
+          muted
+          hidden
+        ></video>
+        <canvas id="faceCanvas" width="600" height="400"></canvas>
+      </div>
+    </div>
   </body>
 </html>

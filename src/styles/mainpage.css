@@ -1,0 +1,46 @@
+/* index.css */
+
+.mainpage-body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5; /* Set your desired background color */
+  }
+  
+  .mainpage-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust to your desired height */
+  }
+  
+  .mainpage-span {
+    margin-bottom: 20px;
+  }
+  
+  .mainpage-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+    background-color: #3498db; /* Set your desired button background color */
+    color: #ffffff; /* Set your desired button text color */
+    border: none;
+    border-radius: 4px;
+  }
+  
+  canvas {
+    border: 1px solid #ddd; /* Set your desired border color for video and canvas */
+    border-radius: 8px;
+    margin: 10px;
+  }
+  
+  /* #video {
+    display: block;
+  }
+  
+  #faceCanvas {
+    display: none; /* Initially hide the canvas */
+  } */
+  
