@@ -9,22 +9,13 @@
       <link rel="stylesheet" href="../index.css" />
       <title>Pop-up Window</title>
     </head>
-    <body class="popup-body">
-      
-      <div class="foo">
+    <body>
+      <div class="popup-inner-div">
         <p class="popup-p">
           You have 30 seconds until your screen locks. Please look at your
           camera
         </p>
       </div>
-
-      <script>
-        const { ipcRenderer } = require("electron");
-
-        function openPopupWindow(time) {
-          ipcRenderer.send("open-popup-window", time);
-        }
-      </script>
     </body>
   </html>
 </html>
