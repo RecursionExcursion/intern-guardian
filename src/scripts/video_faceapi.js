@@ -1,4 +1,5 @@
-import * as face from '../modules/faceapi-util.js'
+//Rename myfaceApi to something less ambiguous and stupid
+import * as ProtoFaceApi from '../modules/proto-facepi.js';
 
 //Capturing DOM elements
 const video = document.getElementById("video");
@@ -17,32 +18,23 @@ let appIsRunning = false;
 const appIsRunningString = "App is running";
 const appIsNotRunningString = "App is not running";
 
-
 //Listeners
 startButton.addEventListener("click", startFaceDetection);
 stopButton.addEventListener("click", stopFaceDetection);
 
 setStatus(appIsNotRunningString);
 
-face.loadAIModels().then(startVideo)
+ProtoFaceApi.loadAIModels()
+const foo = new ProtoFaceApi.FaceApiProtoType(video)
+foo.startVideo()
+foo.mapFaceToCanvas(canvas)
 
-function startVideo() {
-  navigator.getUserMedia(
-    { video: {} },
-    (stream) => (video.srcObject = stream),
-    (err) => console.error(err)
-  );
-  face.mapFaceToCanvas(canvas);
-}
 
 function startFaceDetection() {
   appIsRunning = true;
   setStatus(appIsRunningString);
-
-  faceDetectionInterval = face.startDetectionInterval(
-    faceNotPresentCount,
-    faceDectectionTimeInterval,
-    stopFaceDetection
+  faceDetectionInterval = foo.startDetectionInterval(
+    faceNotPresentCount, faceDectectionTimeInterval, stopFaceDetection
   )
 }
 
@@ -50,6 +42,7 @@ function stopFaceDetection() {
   clearInterval(faceDetectionInterval);
   appIsRunning = false;
   setStatus(appIsNotRunningString);
+  window.popup.closePopupWindow();
 }
 
 function setStatus(text) {
