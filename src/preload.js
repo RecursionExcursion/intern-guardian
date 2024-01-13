@@ -15,9 +15,14 @@ async function openDialog() {
   return await ipcRenderer.invoke("open-dialog", options);
 }
 
+
 let popUpBridge = {
   openPopupWindow,
   closePopupWindow,
 };
 
 contextBridge.exposeInMainWorld("popup", popUpBridge);
+
+// contextBridge.exposeInMainWorld('import', {
+//   require: require,
+// });

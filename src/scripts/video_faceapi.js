@@ -1,3 +1,7 @@
+import * as face from '../modules/faceapi.js'
+
+
+
 //Capturing DOM elements
 const video = document.getElementById("video");
 const startButton = document.getElementById("startButton");
@@ -74,6 +78,7 @@ function startFaceDetection() {
 
       //Close pop up if open
       window.popup.closePopupWindow();
+      // closePopupWindow();
     } else {
       faceNotPresentCount++;
       console.log("Face not present " + faceNotPresentCount + " times");
@@ -83,6 +88,7 @@ function startFaceDetection() {
     if (faceNotPresentCount == 10) {
       //Would love to pass in a var here but electron is an abomination that scorges the earth
       window.popup.openPopupWindow(/*30*/);
+      // createPopupWindow()
     }
     if (faceNotPresentCount >= 60) {
       window.api.lockScreen();

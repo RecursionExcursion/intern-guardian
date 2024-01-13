@@ -36,43 +36,34 @@ app.on("window-all-closed", () => {
 });
 
 
-// function createPopupWindow(time) {
-//   popupWindow = new BrowserWindow({
-//     width: 400,
-//     height: 200,
-//     show: true,
-//     maximizable: false,
-//     frame: false,
-//     alwaysOnTop: true,
-//     webPreferences: {
-//       nodeIntegration: true,
-//     },
-//   });
-  
-//   popupWindow.loadFile(path.join(__dirname, "pages", "popup.html"));
-// }
 
 ipcMain.on("lock-screen", () => {
   require("./scripts/lockscreen.js")();
 });
 
-// ipcMain.on("open-popup-window", () => {
-//   // Code to open the popup window
-//   createPopupWindow();
-// });
-
 let popupWindow;
 
-function closePopupWindow(){
+ipcMain.on("open-popup-window", () => {
+  popupWindow = new BrowserWindow({
+    width: 400,
+    height: 200,
+    show: true,
+    maximizable: false,
+    frame: false,
+    alwaysOnTop: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+});
+
+popupWindow.loadFile(path.join(__dirname, "pages", "popup.html"));
+});
+
+ipcMain.on("close-popup-window", () => {
   if (popupWindow) {
     popupWindow.close();
     popupWindow = null;
   }
-}
-
-ipcMain.on("close-popup-window", () => {
-  // Code to close the popup window
- closePopupWindow()
 });
 
 ipcMain.handle('open-dialog', async (event, options) => {
