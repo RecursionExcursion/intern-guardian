@@ -35,8 +35,6 @@ app.on("window-all-closed", () => {
   }
 });
 
-
-
 ipcMain.on("lock-screen", () => {
   require("./scripts/lockscreen.js")();
 });
@@ -64,8 +62,4 @@ ipcMain.on("close-popup-window", () => {
     popupWindow.close();
     popupWindow = null;
   }
-});
-
-ipcMain.handle('open-dialog', async (event, options) => {
-  return await dialog.showOpenDialog(options);
 });
