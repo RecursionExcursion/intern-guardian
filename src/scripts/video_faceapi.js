@@ -6,6 +6,7 @@ const video = document.getElementById("video");
 const canvas = document.getElementById("faceCanvas");
 
 const startButton = document.getElementById("startButton");
+const addfaceButton = document.getElementById("addfaceButton");
 const stopButton = document.getElementById("stopButton");
 const appStatusText = document.getElementById("appStatusText");
 
@@ -21,6 +22,11 @@ const appIsNotRunningString = "App is not running";
 //Listeners
 startButton.addEventListener("click", startFaceDetection);
 stopButton.addEventListener("click", stopFaceDetection);
+addfaceButton.addEventListener("click", addFace);
+
+function addFace() {
+  window.popup.openAddFaceWindow()
+}
 
 setStatus(appIsNotRunningString);
 
