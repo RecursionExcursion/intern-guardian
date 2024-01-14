@@ -92,3 +92,4 @@ typings/
 out/
 
 .vscode
+./src/appstate/*
