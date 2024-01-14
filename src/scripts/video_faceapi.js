@@ -1,5 +1,5 @@
 //Rename myfaceApi to something less ambiguous and stupid
-import * as ProtoFaceApi from '../modules/proto-facepi.js';
+import * as faceapi_object from '../modules/faceapi_object.js';
 
 //Capturing DOM elements
 const video = document.getElementById("video");
@@ -30,8 +30,8 @@ function addFace() {
 
 setStatus(appIsNotRunningString);
 
-ProtoFaceApi.loadAIModels()
-const foo = new ProtoFaceApi.FaceApiProtoType(video)
+faceapi_object.loadAIModels()
+const foo = new faceapi_object.FaceApiObject(video)
 foo.startVideo()
 foo.mapFaceToCanvas(canvas)
 
