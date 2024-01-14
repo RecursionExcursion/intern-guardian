@@ -3,10 +3,13 @@ const video = document.getElementById("video");
 const captureButton = document.getElementById("captureButton");
 const saveButton = document.getElementById("saveButton");
 const loadButton = document.getElementById("loadButton");
+const compareButton = document.getElementById("compareButton");
+const homeButton = document.getElementById("homeButton");
 
 let capturedCanvas;
-const capturedimage = document.getElementById("image");
-const loadedImage = document.getElementById("loadedImage");
+const image = document.getElementById("image");
+
+loadImage();
 
 
 navigator.mediaDevices.getUserMedia({ video: true })
@@ -16,9 +19,27 @@ navigator.mediaDevices.getUserMedia({ video: true })
 captureButton.addEventListener("click", captureClick);
 saveButton.addEventListener("click", saveButtonClick);
 loadButton.addEventListener("click", loadImage);
+compareButton.addEventListener("click", loadImage);
+homeButton.addEventListener("click", returnHome);
+
+function returnHome(){
+  window.view.homeView();
+}
 
 function loadImage() {
-  window.memory.loadCanvas().then(json => loadedImage.src = json.imageData)
+  window.memory.loadCanvas().then(json => {
+    if (json) {
+      const w = json.width
+      const h = json.height
+
+      image.src = json.imageData
+      image.width = w
+      image.height = h
+
+    }else{
+      image.src = '../public/smile.jpg'
+    }
+  })
 }
 
 
@@ -48,7 +69,7 @@ function saveButtonClick() {
 function captureClick() {
   captureImage(video).then((captured) => {
     capturedCanvas = captured;
-    capturedimage.src = canvasToImg(captured).src;
+    image.src = captured.toDataURL();
   });
 }
 

@@ -3,8 +3,10 @@ button {
   font-size: 16px;
   cursor: pointer;
   margin-right: 10px;
-  background-color: #3498db; /* Set your desired button background color */
-  color: #ffffff; /* Set your desired button text color */
+  background-color: #3498db;
+  /* Set your desired button background color */
+  color: #ffffff;
+  /* Set your desired button text color */
   border: none;
   border-radius: 4px;
 }
@@ -37,25 +39,18 @@ body {
   align-items: center;
 }
 
-.button-container-div{
-    display: flex;
-    flex-direction: row;
-    justify-content: center; 
-    align-items: center;
-    margin: 20px;
+.button-container-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
 }
 
-.form-wrapper-div{
-    display: flex;
-    flex-direction: row;
-    justify-content: center; 
-    align-items: center;
-    margin: 20px;
-}
+
 
 button:disabled {
-    background-color: #d3d3d3; /* Light gray background */
-    color: #808080; /* Darker gray text */
-    cursor: not-allowed; /* Show not-allowed cursor */
-    /* Add any other styles you want for disabled buttons */
-  }
+  background-color: #d3d3d3;
+  color: #808080;
+  cursor: not-allowed;
+}

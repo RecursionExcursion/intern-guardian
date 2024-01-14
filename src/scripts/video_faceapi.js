@@ -25,7 +25,8 @@ stopButton.addEventListener("click", stopFaceDetection);
 addfaceButton.addEventListener("click", addFace);
 
 function addFace() {
-  window.popup.openAddFaceWindow()
+  // window.popup.openAddFaceWindow()
+  window.view.faceCaptureView();
 }
 
 setStatus(appIsNotRunningString);

@@ -59,6 +59,11 @@ ipcMain.on("open-popup-window", () => {
   popupWindow.loadFile(path.join(__dirname, "pages", "popup.html"));
 });
 
+ipcMain.on('load-view', (event, viewName) => {
+  const path = __dirname + viewName + '.html';
+  mainWindow.loadFile(path);
+});
+
 ipcMain.on("close-popup-window", () => {
   if (popupWindow) {
     popupWindow.close();
@@ -101,7 +106,7 @@ function saveCanvasDataToMemory(canvasData) {
 }
 
 ipcMain.on('loadCanvasData', (event) => {
-console.log('Loading...')
+  console.log('Loading...')
 
 
   const loadedCanvasData = loadCanvasDataFromMemory();
