@@ -36,12 +36,11 @@ function dataURLToCanvas(imageJson) {
   return canvas;
 }
 
-
 function saveButtonClick() {
   const canvasData = {
     width: capturedCanvas.width,
     height: capturedCanvas.height,
-    imageData: capturedCanvas.toDataURL(), // Get base64 representation of the canvas image
+    imageData: capturedCanvas.toDataURL(),
   };
   window.memory.saveCanvas(canvasData);
 }
@@ -49,11 +48,9 @@ function saveButtonClick() {
 function captureClick() {
   captureImage(video).then((captured) => {
     capturedCanvas = captured;
-    // capturedimage.src = canvasToImg(captured).src;
     capturedimage.src = canvasToImg(captured).src;
   });
 }
-
 
 function captureImage() {
   return new Promise((resolve) => {
@@ -61,10 +58,7 @@ function captureImage() {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     const ctx = canvas.getContext("2d");
-
-    // Draw the video frame onto the canvas
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
     resolve(canvas)
   });
 }

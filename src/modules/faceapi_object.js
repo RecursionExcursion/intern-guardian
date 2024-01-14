@@ -8,7 +8,7 @@ export function loadAIModels() {
     ])
 }
 
-export class FaceApiProtoType {
+export class FaceApiObject {
     constructor(video) {
         this.video = video;
         this.canvas = createOffScreenCanvas(video);
