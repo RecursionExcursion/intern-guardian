@@ -1,10 +1,36 @@
 //Only needs to be ran one time per runtime
-export function loadAIModels() {
+function loadAIModels() {
+    const modelPath = './public/models/'
     return Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri("../models/face-api"),
-        faceapi.nets.faceLandmark68Net.loadFromUri("../models/face-api"),
-        faceapi.nets.faceRecognitionNet.loadFromUri("../models/face-api"),
-        faceapi.nets.faceExpressionNet.loadFromUri("../models/face-api"),
+        faceapi.nets.ssdMobilenetv1.loadFromUri(modelPath),
+
+        faceapi.nets.tinyFaceDetector.loadFromUri(modelPath),
+        faceapi.nets.tinyYolov2.loadFromUri(modelPath),
+
+        faceapi.nets.faceLandmark68Net.loadFromUri(modelPath),
+        faceapi.nets.faceLandmark68TinyNet.loadFromUri(modelPath),
+
+        faceapi.nets.faceRecognitionNet.loadFromUri(modelPath),
+        faceapi.nets.faceExpressionNet.loadFromUri(modelPath),
+
+        faceapi.nets.ageGenderNet.loadFromUri(modelPath),
+    ])
+}
+
+function unloadAIModels() {
+    return Promise.all([
+        faceapi.nets.ssdMobilenetv1.unloadModel(),
+
+        faceapi.nets.tinyFaceDetector.unloadModel(),
+        faceapi.nets.tinyYolov2.loadFromUri("../models/face-api"),
+
+        faceapi.nets.faceLandmark68Net.unloadModel(),
+        faceapi.nets.faceLandmark68TinyNet.unloadModel(),
+
+        faceapi.nets.faceRecognitionNet.unloadModel(),
+        faceapi.nets.faceExpressionNet.unloadModel(),
+
+        faceapi.nets.ageGenderNet.unloadModel(),
     ])
 }
 
@@ -14,7 +40,15 @@ export class FaceApiObject {
         this.canvas = createOffScreenCanvas(video);
     }
 
-    getCanvas(){
+    async loadModels() {
+        await loadAIModels();
+    } 
+    
+    async unloadModels() {
+        await unloadAIModels();
+    }
+
+    getCanvas() {
         return this.canvas;
     }
 
@@ -68,6 +102,32 @@ export class FaceApiObject {
             faceapi.draw.drawFaceExpressions(targetCanvas, resizedDetections);
         }, 100);
     }
+
+    async compareFacesToOverlay(image) {
+        const detections = await detectFacesOnImage(image);
+
+        // Draw the results on the overlay canvas
+        const canvas = faceapi.createCanvasFromMedia(overlay);
+        // document.body.append(canvas);
+        const displaySize = { width: overlay.width, height: overlay.height };
+
+        faceapi.matchDimensions(canvas, displaySize);
+
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        faceapi.draw.drawDetections(canvas, resizedDetections);
+        faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+
+        // Process the results and draw the comparison information
+        resizedDetections.forEach(detection => {
+            const bestMatch = faceMatcher.findBestMatch(detection.descriptor);
+
+            const text = `Name: ${bestMatch.label} | Distance: ${bestMatch.distance.toFixed(2)}`;
+            const drawBox = new faceapi.draw.DrawTextField([text], detection.detection.box.bottomLeft);
+
+            drawBox.draw(canvas);
+        })
+    };
 }
 
 function createOffScreenCanvas(vid) {
@@ -88,7 +148,19 @@ function createOffScreenCanvas(vid) {
 async function captureFaces(video) {
     //Returns detection object
     return await faceapi
-      .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-      .withFaceLandmarks()
-      .withFaceExpressions();
-  }
+        .detectAllFaces(video, await  new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceExpressions();
+}
+
+async function detectFacesOnImage(image) {
+    return new Promise(async (resolve) => {
+        const results = await faceapi
+            .detectAllFaces(image)
+            .withFaceLandmarks()
+            .withFaceDescriptors()
+        resolve(results)
+    })
+}
+
+

@@ -22,25 +22,30 @@ const appIsNotRunningString = "App is not running";
 //Listeners
 startButton.addEventListener("click", startFaceDetection);
 stopButton.addEventListener("click", stopFaceDetection);
-addfaceButton.addEventListener("click", addFace);
+addfaceButton.addEventListener("click", toAddFaceView);
 
-function addFace() {
-  // window.popup.openAddFaceWindow()
+let fapi;
+
+function toAddFaceView() {
+  // fapi.unloadModels()
   window.view.faceCaptureView();
 }
 
 setStatus(appIsNotRunningString);
-
-faceapi_object.loadAIModels()
-const foo = new faceapi_object.FaceApiObject(video)
-foo.startVideo()
-foo.mapFaceToCanvas(canvas)
+initalizeFaceApi()
+async function initalizeFaceApi() {
+  fapi = new faceapi_object.FaceApiObject(video)
+  await fapi.loadModels()
+  window.msg.clogMsg('Models loaded')
+  fapi.startVideo()
+  fapi.mapFaceToCanvas(canvas)
+}
 
 
 function startFaceDetection() {
   appIsRunning = true;
   setStatus(appIsRunningString);
-  faceDetectionInterval = foo.startDetectionInterval(
+  faceDetectionInterval = fapi.startDetectionInterval(
     faceNotPresentCount, faceDectectionTimeInterval, stopFaceDetection
   )
 }
