@@ -3,11 +3,53 @@
 
 const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld("electron", {
-  openPopupWindow: (time) => {
-    ipcRenderer.send("open-popup-window", time);
+function openAddFaceWindow() {
+  ipcRenderer.send("open-addface-window");
+}
+
+
+function openPopupWindow() {
+  ipcRenderer.send("open-popup-window");
+}
+
+function closePopupWindow() {
+  ipcRenderer.send("close-popup-window");
+}
+
+let popUpBridge = {
+  openAddFaceWindow,
+  openPopupWindow,
+  closePopupWindow,
+};
+
+contextBridge.exposeInMainWorld("popup", popUpBridge);
+
+contextBridge.exposeInMainWorld('ipc', {
+  lockScreen: () => {
+    ipcRenderer.send('lock-screen');
   },
-  closePopupWindow: function () {
-    ipcRenderer.send("close-popup-window");
+});
+
+contextBridge.exposeInMainWorld('msg', {
+  clogMsg: (message) => {
+    ipcRenderer.send('message', message);
   },
+});
+
+contextBridge.exposeInMainWorld('memory', {
+  saveCanvas: (data) => {
+    ipcRenderer.send('saveCanvas', data);
+  },
+  loadCanvas: () => {
+    return new Promise((resolve) => {
+      ipcRenderer.once('canvasDataLoaded', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.once('canvasDataLoadError', (event, errorMessage) => {
+        reject(new Error(errorMessage));
+      });
+
+      ipcRenderer.send("loadCanvasData")
+    });
+  }
 });
