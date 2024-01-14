@@ -71,25 +71,6 @@ ipcMain.on("close-popup-window", () => {
   }
 });
 
-
-ipcMain.on("open-addface-window", () => {
-  popupWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    show: true,
-    alwaysOnTop: true,
-    modal: true,
-    webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: true
-    },
-  });
-
-  popupWindow.loadFile(path.join(__dirname, "pages", "addface.html"));
-});
-
-
-
 ipcMain.on("message", (event, message) => {
   console.log(message)
 })
