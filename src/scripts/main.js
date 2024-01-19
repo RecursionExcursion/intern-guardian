@@ -1,5 +1,5 @@
 //Rename myfaceApi to something less ambiguous and stupid
-import * as faceFacade from '../scripts/faceapi-facade.js';
+import * as faceFacade from "../scripts/faceapi-facade.js";
 
 /*
   DOM elements
@@ -20,6 +20,8 @@ const compareButton = document.getElementById("compareButton");
 
 const refImage = document.getElementById("image1");
 
+const statusLabel = document.getElementById("statusLabel");
+const consoleTextArea = document.getElementById("console");
 
 /*
   Variables
@@ -52,30 +54,29 @@ loadButton.addEventListener("click", loadImage);
 */
 
 function initalization() {
+  writeToConsoleTA("Initializing....")
+
   navigator.getUserMedia(
     { video: true },
     (stream) => (video.srcObject = stream),
-    (err) => console.error(err)
+    (err) => consoleTextArea.error(err)
   );
   const dim = 200;
   video.width = dim;
   video.height = dim;
   setStatus(appIsNotRunningString);
-  gif.src = "./public/images/givemeyourface.gif"
+  gif.src = "./public/images/givemeyourface.gif";
   loadImage();
+  consoleTextArea.disabled = true;
 
+  writeToConsoleTA("Initialization complete")
 }
 
-initalization()
-
-
-
-
+initalization();
 
 // faceFacade.loadAIModels().then(
 //   faceFacade.mapFaceToCanvas(video, overlayCanvas)
 // )
-
 
 /*
   Functions
@@ -99,24 +100,23 @@ function setStatus(text) {
     appStatusText.classList.add("label-red");
   }
   appStatusText.textContent = text;
-  enableDisableButtons()
+  enableDisableButtons();
 }
 
-
-
 function loadImage() {
-  window.memory.loadCanvas().then(json => {
+  window.memory.loadCanvas().then((json) => {
     if (json) {
-      const w = json.width
-      const h = json.height
+      const w = json.width;
+      const h = json.height;
 
-      refImage.src = json.imageData
-      refImage.width = w
-      refImage.height = h
+      refImage.src = json.imageData;
+      refImage.width = w;
+      refImage.height = h;
+      writeToConsoleTA("Image loaded from memory")
     } else {
-      refImage.src = './public/images/smile.jpg'
+      refImage.src = "./public/images/smile.jpg";
     }
-  })
+  });
   saveButton.disabled = true;
 }
 
@@ -140,6 +140,7 @@ function saveButtonClick() {
     imageData: capturedCanvas.toDataURL(),
   };
   window.memory.saveCanvas(canvasData);
+  writeToConsoleTA('Image Saved')
   saveButton.disabled = true;
 }
 
@@ -158,7 +159,7 @@ function captureImage() {
     canvas.height = video.videoHeight;
     const ctx = canvas.getContext("2d");
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    resolve(canvas)
+    resolve(canvas);
   });
 }
 
@@ -178,14 +179,17 @@ function captureImage() {
 //   faceapi.nets.ssdMobilenetv1.loadFromUri('/models')
 // ]).then(start)
 
-
 //FaceAPI
 function startFaceDetection() {
   appIsRunning = true;
   setStatus(appIsRunningString);
-  faceDetectionInterval = foo.startDetectionInterval(
-    faceNotPresentCount, faceDectectionTimeInterval, stopFaceDetection
-  )
+  // faceDetectionInterval = foo.startDetectionInterval(
+  //   faceNotPresentCount,
+  //   faceDectectionTimeInterval,
+  //   stopFaceDetection
+  // );
+  writeToConsoleTA("Face detection started")
+
 }
 
 function stopFaceDetection() {
@@ -193,61 +197,62 @@ function stopFaceDetection() {
   appIsRunning = false;
   setStatus(appIsNotRunningString);
   window.popup.closePopupWindow();
+  writeToConsoleTA("Face detection ended")
 }
 
-
-
-
-
-
-const modelPath = './models'
-
-const run = async () => {
-
-  //Load models
+async function loadModels() {
+  const modelPath = "./models";
   await Promise.all([
     faceapi.nets.ssdMobilenetv1.loadFromUri(modelPath),
     faceapi.nets.faceLandmark68Net.loadFromUri(modelPath),
     faceapi.nets.faceRecognitionNet.loadFromUri(modelPath),
     faceapi.nets.ageGenderNet.loadFromUri(modelPath),
-  ])
+  ]);
+}
+
+const run = async () => {
+
+  writeToConsoleTA("Loading AI models");
+  await loadModels();
+  writeToConsoleTA("AI Models loaded");
 
   //Set up FaceApi
-  let refFaceAIData = await faceapi.detectAllFaces(refImage)
+  let refFaceAIData = await faceapi
+    .detectAllFaces(refImage)
     .withFaceLandmarks()
     .withFaceDescriptors()
-    .withAgeAndGender()
+    .withAgeAndGender();
 
-
-
-
-
-  console.log(refFaceAIData)
+  console.log(refFaceAIData);
   window.msg.clogMsg(refFaceAIData);
 
-
   //Set up canvas
-  const canvas1 = document.getElementById('canvas1')
-  canvas1.style.position = 'absolute'
+  const canvas1 = document.getElementById("canvas1");
+  canvas1.style.position = "absolute";
 
-  canvas1.style.left = refImage.offsetLeft
-  canvas1.style.top = refImage.offsetTop
-  canvas1.height = refImage.height
-  canvas1.width = refImage.width
+  canvas1.style.left = refImage.offsetLeft;
+  canvas1.style.top = refImage.offsetTop;
+  canvas1.height = refImage.height;
+  canvas1.width = refImage.width;
+
+  console.log("AI data", refFaceAIData);
 
 
-  //Draw results 
-  refFaceAIData = faceapi.resizeResults(refFaceAIData, refImage)
-  faceapi.draw.drawDetections(canvas1, refFaceAIData)
+  refFaceAIData.forEach(f=>{
+    console.log(f)
+  })
+
+  //Draw results
+  refFaceAIData = faceapi.resizeResults(refFaceAIData, refImage);
+  faceapi.draw.drawDetections(canvas1, refFaceAIData);
 
   //Face matching
-  let faceMatcher = new faceapi.FaceMatcher(refFaceAIData)
+  let faceMatcher = new faceapi.FaceMatcher(refFaceAIData);
 
   setInterval(async () => {
+    const snapshot = new Image();
 
-    const snapshot = new Image()
-
-    console.log('Snapshot taken')
+    console.log("Snapshot taken");
 
     //capture Image from video
     captureImage(video).then((captured) => {
@@ -255,49 +260,28 @@ const run = async () => {
       snapshot.src = captured.toDataURL();
     });
 
-
-    let snapshotAIData = await faceapi.detectAllFaces(snapshot)
+    let snapshotAIData = await faceapi
+      .detectAllFaces(snapshot)
       .withFaceLandmarks()
       .withFaceDescriptors()
-      .withAgeAndGender()
+      .withAgeAndGender();
 
-    snapshotAIData = faceapi.resizeResults(snapshotAIData, snapshot)
+    snapshotAIData = faceapi.resizeResults(snapshotAIData, snapshot);
 
-    snapshotAIData.forEach(face=>{
-      const { detection, descriptor } = face
+    snapshotAIData.forEach((face) => {
+      const { detection, descriptor } = face;
 
-      let label = faceMatcher.findBestMatch(descriptor).toString()
+      let label = faceMatcher.findBestMatch(descriptor).toString();
 
-      let options = {label: "Me"}
-      
-      console.log(label)
-    })
+      let options = { label: "Me" };
 
+      console.log(label);
+    });
+  }, 5000);
+};
 
+run();
 
-  }, 5000)
+function writeToConsoleTA(message) {
+  consoleTextArea.value += message + "\n";
 }
-
-
-
-// function captureClick() {
-//   captureImage(video).then((captured) => {
-//     capturedCanvas = captured;
-//     refImage.src = captured.toDataURL();
-//   });
-//   saveButton.disabled = false;
-// }
-
-// function captureImage() {
-//   return new Promise((resolve) => {
-//     const canvas = document.createElement("canvas");
-//     canvas.width = video.videoWidth;
-//     canvas.height = video.videoHeight;
-//     const ctx = canvas.getContext("2d");
-//     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-//     resolve(canvas)
-//   });
-// }
-
-
-run()
