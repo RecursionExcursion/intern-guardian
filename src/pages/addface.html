@@ -12,29 +12,33 @@
 </head>
 
 <body>
-  <div class="img-div">
-    <img src="../public/givemeyourface.gif" alt="GIF Image" />
-  </div>
-  <div class="button-container-div">
-  </div>
-
   <div>
 
-    <div class="flex-wrapper">
-      <button id="captureButton">Capture Image</button>
-      <button id="saveButton">Save</button>
-      <button id="loadButton">Load</button>
-      <button id="compareButton">Compare</button>
-      <button id="homeButton">Home</button>
+
+    <div class="img-div">
+      <img id="bannerGif" src="../public/images/givemeyourface.gif" alt="GIF Image" />
+    </div>
+    <div class="button-container-div">
     </div>
 
-    <div class="flex-wrapper-div">
-      <video id="video"  autoplay></video>
-      <img id="image" hidden="true" />
-    </div>
+    <div>
 
+      <div class="flex-wrapper">
+        <button id="captureButton">Capture Image</button>
+        <button id="saveButton">Save</button>
+        <button id="loadButton">Load</button>
+        <button id="compareButton">Compare</button>
+        <button id="homeButton">Home</button>
+      </div>
+
+      <div class="flex-wrapper-div">
+        <video id="video" autoplay></video>
+        <img id="image" hidden="true" />
+      </div>
+
+    </div>
+    <script src="../scripts/imagestore.js"></script>
   </div>
-  <script src="../scripts/imagestore.js"></script>
 </body>
 
 </html>

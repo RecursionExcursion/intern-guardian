@@ -8,8 +8,10 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    // fullscreen: true,
     // resizable: false,
     autoHideMenuBar: true,
+    frame: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true
@@ -59,11 +61,6 @@ ipcMain.on("open-popup-window", () => {
   popupWindow.loadFile(path.join(__dirname, "pages", "popup.html"));
 });
 
-ipcMain.on('load-view', (event, viewName) => {
-  const path = __dirname + viewName + '.html';
-  mainWindow.loadFile(path);
-});
-
 ipcMain.on("close-popup-window", () => {
   if (popupWindow) {
     popupWindow.close();
@@ -72,7 +69,7 @@ ipcMain.on("close-popup-window", () => {
 });
 
 ipcMain.on("message", (event, message) => {
-  console.log(message)
+  console.dir(message)
 })
 
 const statePath = path.join(__dirname, "appstate", "user64.json")
@@ -105,6 +102,3 @@ function loadCanvasDataFromMemory() {
     return null;
   }
 }
-
-
-

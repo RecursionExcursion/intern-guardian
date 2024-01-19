@@ -1,10 +1,13 @@
 //Only needs to be ran one time per runtime
 export function loadAIModels() {
+
+    const modelPath = './public/models'
+
     return Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri("../models/face-api"),
-        faceapi.nets.faceLandmark68Net.loadFromUri("../models/face-api"),
-        faceapi.nets.faceRecognitionNet.loadFromUri("../models/face-api"),
-        faceapi.nets.faceExpressionNet.loadFromUri("../models/face-api"),
+        faceapi.nets.tinyFaceDetector.loadFromUri(modelPath),
+        faceapi.nets.faceLandmark68Net.loadFromUri(modelPath),
+        faceapi.nets.faceRecognitionNet.loadFromUri(modelPath),
+        faceapi.nets.faceExpressionNet.loadFromUri(modelPath),
     ])
 }
 
@@ -26,48 +29,9 @@ export class FaceApiObject {
         );
     }
 
-    startDetectionInterval(count, time, stopFunction) {
-        return setInterval(async () => {
+    
 
-            const detections = await captureFaces(this.video);
-            const faceDetected = detections.length > 0;
-
-            if (faceDetected) {
-                console.log("I see you!");
-                count = 0;
-                window.popup.closePopupWindow();
-            } else {
-                count++;
-                console.log("Face not present " + count + " times");
-            }
-
-            //Set to 30> when done testing
-            if (count == 10) {
-                //Would love to pass in a var here but electron is an abomination that scorges the earth
-                window.popup.openPopupWindow( /*30*/);
-            }
-            if (count >= 30) {
-                window.ipc.lockScreen();
-                stopFunction();
-                window.popup.closePopupWindow();
-            }
-        }, time);
-    }
-
-    mapFaceToCanvas(targetCanvas) {
-        const displaySize = { width: targetCanvas.width, height: targetCanvas.height };
-        faceapi.matchDimensions(targetCanvas, displaySize);
-
-        setInterval(async () => {
-            const detections = await captureFaces(video);
-            const resizedDetections = faceapi.resizeResults(detections, displaySize);
-
-            targetCanvas.getContext("2d").clearRect(0, 0, targetCanvas.width, targetCanvas.height);
-            faceapi.draw.drawDetections(targetCanvas, resizedDetections);
-            faceapi.draw.drawFaceLandmarks(targetCanvas, resizedDetections);
-            faceapi.draw.drawFaceExpressions(targetCanvas, resizedDetections);
-        }, 100);
-    }
+    
 }
 
 function createOffScreenCanvas(vid) {

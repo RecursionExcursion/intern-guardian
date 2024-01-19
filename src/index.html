@@ -1,37 +1,48 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Intern Guardian</title>
-    <link rel="stylesheet" href="index.css" />
-    <script defer src="../face-api.min.js"></script>
-    <script type="module" defer src="./scripts/video_faceapi.js"></script>
-    <script defer src="./scripts/navigation.js"></script>
-    <link rel="stylesheet" href="./index.css" />
-  </head>
-  <body class="mainpage-body">
-    <div class="wrapper-div">
-      <div class="button-container-div">
-        <button id="startButton">Start</button>
-        <button id="stopButton">Stop</button>
-        <button id="addfaceButton">Upload face</button>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Intern Guardian</title>
+  <script defer src="./face-api.min.js"></script>
+  <script type="module" defer src="./scripts/main.js"></script>
+  <link rel="stylesheet" href="./index.css" />
+</head>
+
+<body class="mainpage-body">
+  <div class="content-wrapper">
+    <div class="face-scanner-wrapper">
+      <div class="media-wrapper">
+        <video id="video" autoplay muted></video>
+        <canvas id="overlayCanvas" style="position: absolute; top: 0; left: 0;"></canvas>
       </div>
-      <div class="label-wrapper-div">
-        <label id="appStatusText">Application running</label>
+      <div class="media-wrapper">
+        <img id="image1" />
+        <canvas id="canvas1"></canvas>
       </div>
-      <div class="canvas-wrapper-div">
-        <video
-          id="video"
-          width="600"
-          height="400"
-          autoplay
-          muted
-          hidden
-        ></video>
-        <div>
-          <canvas id="faceCanvas"></canvas>
+    </div>
+    <div class="user-interface-wrapper">
+      <div id="userInterface">
+        <div class="button-container">
+          <button id="startButton">Start</button>
+          <button id="stopButton">Stop</button>
+        </div>
+        <div class="label-wrapper-div">
+          <label id="appStatusText">Application running</label>
+        </div>
+      </div>
+
+      <div class="add-face-div">
+        <img id="bannerGif" alt="GIF Image" />
+
+        <div class="button-container">
+          <button id="captureButton">Capture Image</button>
+          <button id="saveButton">Save</button>
+          <button id="loadButton">Load</button>
+          <button id="compareButton">Compare</button>
         </div>
       </div>
     </div>
-  </body>
+</body>
+
 </html>
