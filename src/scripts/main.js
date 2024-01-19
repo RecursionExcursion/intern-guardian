@@ -269,7 +269,7 @@ const run = async () => {
       let label = faceMatcher.findBestMatch(descriptor).toString()
 
       let options = {label: "Me"}
-      const drawBow
+      
       console.log(label)
     })
 
