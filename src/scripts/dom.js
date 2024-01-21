@@ -33,13 +33,15 @@ export function setMenuTabToDetection(isDetectionControlMenu) {
         showHide(element.startStopWrapper, element.referenceSettingsWrapper)
         enableDisable(element.referenceMenuTab, element.detectionsControlTab)
         enableReferenceImageView(false)
-        resizeVideoFeed(state.videoSoloHeight)
+        resizeMedia(element.video, state.videoSoloHeight, state.videoAspectRatio)
+        resizeMedia(element.videoCanvas, state.videoSoloHeight, state.videoAspectRatio)
         silentLoadImage()
     } else {
         showHide(element.referenceSettingsWrapper, element.startStopWrapper)
         enableDisable(element.detectionsControlTab, element.referenceMenuTab)
         enableReferenceImageView(true)
-        resizeVideoFeed(state.videoPariedHeight)
+        resizeMedia(element.video, state.videoPariedHeight, state.videoAspectRatio)
+        resizeMedia(element.videoCanvas, state.videoPariedHeight, state.videoAspectRatio)
     }
 }
 
@@ -65,9 +67,9 @@ export function getDisplaySize(element) {
     return { width: element.width, height: element.height }
 }
 
-export function resizeVideoFeed(dimension){
-    element.video.height = dimension
-    element.video.width = dimension * (state.videoAspectRatio)
+export function resizeMedia(media, dimension, aspectRatio) {
+    media.height = dimension
+    media.width = dimension * aspectRatio
 }
 
 function enableReferenceImageView(referenceMenuToggled) {

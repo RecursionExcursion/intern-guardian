@@ -14,7 +14,8 @@ import initializeListeners from './listeners.js'
   initializeListeners();
 
   camera.initalizeCamera()
-  dom.resizeVideoFeed(state.videoSoloHeight)
+  dom.resizeMedia(element.video, state.videoSoloHeight, state.videoAspectRatio)
+
   element.consoleTextArea.disabled = true;
   element.consoleTextArea.style.resize = 'none';
 

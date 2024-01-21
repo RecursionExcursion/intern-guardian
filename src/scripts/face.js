@@ -83,13 +83,15 @@ async function startMyFaceDetection() {
 
     let count = 0
 
-    const displaySize = dom.getDisplaySize(element.videoCanvas)
-    faceapi.matchDimensions(element.videoCanvas, displaySize)
-
     state.setVideoOverlayInterval(setInterval(async () => {
+        
+        const displaySize = dom.getDisplaySize(element.videoCanvas)
+        faceapi.matchDimensions(element.videoCanvas, displaySize)
+
         clearCanvas(element.videoCanvas)
 
         let videoAIData = await captureFacesWithAI(element.video)
+
 
         videoAIData = faceapi.resizeResults(videoAIData, displaySize);
 
