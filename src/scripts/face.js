@@ -1,6 +1,7 @@
 import * as dom from './dom.js'
 import * as element from './elements.js'
 import * as state from './state-params.js'
+import { openPopup, closePopup } from './popup.js'
 
 export async function loadModels() {
     const modelPath = "./models";
@@ -37,7 +38,7 @@ export function startFaceDetection() {
 export function stopFaceDetection() {
     stopFaceAI()
     dom.setRunningStatus(false);
-    window.popup.closePopupWindow();
+    closePopup()
 }
 
 const runFaceAI = async () => {
@@ -121,19 +122,18 @@ function screenLock(bool, count) {
 
     if (bool) {
         count = 0;
-        window.popup.closePopupWindow();
+        closePopup()
     } else {
         if (count % 10 == 0) {
-            dom.writeToConsoleTA("Face not present, locking screen in " + (40 - count))
+            dom.writeToConsoleTA("Face not present, locking screen in " + (60 - count))
         }
         count += 2;
     }
 
-    //Set to 30> when done testing
-    if (count == 10) {
-        window.popup.openPopupWindow();
+    if (count == 30) {
+        openPopup()
     }
-    if (count >= 30) {
+    if (count >= 60) {
         window.ipc.lockScreen();
         stopFaceDetection()
     }
@@ -142,8 +142,7 @@ function screenLock(bool, count) {
 }
 
 function captureFacesWithAI(reference) {
-    return faceapi
-        .detectAllFaces(reference)
+    return faceapi.detectAllFaces(reference)
         .withFaceLandmarks()
         .withFaceDescriptors()
         .withAgeAndGender();
