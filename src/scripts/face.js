@@ -40,26 +40,26 @@ export function stopFaceDetection() {
     window.popup.closePopupWindow();
 }
 
-
 const runFaceAI = async () => {
     if (state.anyFaceMode) {
-        startAnyFaceDetection(stopFaceAI)
+        startAnyFaceDetection()
     } else {
-        startMyFaceDetection(stopFaceAI)
+        startMyFaceDetection()
     }
 }
 
 function stopFaceAI() {
     clearInterval(state.faceDetectionInterval)
     clearInterval(state.videoOverlayInterval)
+    clearCanvas(element.videoCanvas)
 }
 
-function startAnyFaceDetection(stopFunction) {
+function startAnyFaceDetection() {
 
     let count = 0
+
     const displaySize = dom.getDisplaySize(element.videoCanvas)
     faceapi.matchDimensions(element.videoCanvas, displaySize)
-
 
     state.setVideoOverlayInterval(setInterval(async () => {
 
@@ -69,85 +69,76 @@ function startAnyFaceDetection(stopFunction) {
 
         updateVideoOverlay(element.videoCanvas, videoAIData, displaySize)
 
-        if (faceDetected) {
-            count = 0;
-            window.popup.closePopupWindow();
-        } else {
-            count++;
-            dom.writeToConsoleTA("Face not present, locking screen in " + (40 - (2 * count)))
-        }
+        count = screenLock(faceDetected, count)
 
-        //Set to 30> when done testing
-        if (count == 10) {
-            window.popup.openPopupWindow();
-        }
-        if (count >= 30) {
-            window.ipc.lockScreen();
-            stopFunction();
-            window.popup.closePopupWindow();
-        }
     }, state.intervalTime))
 }
 
-async function startMyFaceDetection(stopFunction) {
+async function startMyFaceDetection() {
 
-    //Get stored faceAIData
-    let refFaceAIData = await faceapi
-        .detectAllFaces(element.refImage)
-        .withFaceLandmarks()
-        .withFaceDescriptors()
-        .withAgeAndGender();
+    let refFaceAIData = await captureFacesWithAI(element.refImage)
 
-    //Logging
-    console.log(refFaceAIData);
-    window.msg.clogMsg(refFaceAIData);
-
-    //Set up canvas
-    const canvas1 = document.getElementById("canvas1");
-    canvas1.style.position = "absolute";
-
-    canvas1.style.left = element.refImage.offsetLeft;
-    canvas1.style.top = element.refImage.offsetTop;
-    canvas1.height = element.refImage.height;
-    canvas1.width = element.refImage.width;
-
-    console.log("AI data", refFaceAIData);
-
-    //Logging
-    refFaceAIData.forEach(f => {
-        console.log(f)
-    })
-
-    //Draw results
-    refFaceAIData = faceapi.resizeResults(refFaceAIData, element.refImage);
-    faceapi.draw.drawDetections(canvas1, refFaceAIData);
-
-    //Face matching
     let faceMatcher = new faceapi.FaceMatcher(refFaceAIData);
 
-    setInterval(async () => {
-        const snapshot = new Image();
+    let count = 0
 
-        console.log("Snapshot taken");
+    const displaySize = dom.getDisplaySize(element.videoCanvas)
+    faceapi.matchDimensions(element.videoCanvas, displaySize)
 
-        let snapshotAIData = await faceapi
-            .detectAllFaces(snapshot)
-            .withFaceLandmarks()
-            .withFaceDescriptors()
-            .withAgeAndGender();
+    state.setVideoOverlayInterval(setInterval(async () => {
+        clearCanvas(element.videoCanvas)
 
-        snapshotAIData = faceapi.resizeResults(snapshotAIData, snapshot);
+        let videoAIData = await captureFacesWithAI(element.video)
 
-        snapshotAIData.forEach((face) => {
+        videoAIData = faceapi.resizeResults(videoAIData, displaySize);
+
+        let isPresent = false
+
+        videoAIData.forEach((face) => {
             const { detection, descriptor } = face;
 
             let label = faceMatcher.findBestMatch(descriptor).toString();
 
-            let options = { label: "Me" };
+            let options
 
-            console.log(label);
+            if (label.includes("unknown")) {
+                // options = { label: "Unknown" };
+                return
+            } else {
+                options = { label: "Me" };
+            }
+            isPresent = true
+            const drawBox = new faceapi.draw.DrawBox(detection.box, options)
+            drawBox.draw(element.videoCanvas)
         });
-    }, 5000);
+
+        count = screenLock(isPresent, count)
+
+    }, state.intervalTime));
+}
+
+function screenLock(bool, count) {
+
+    if (bool) {
+        count = 0;
+        window.popup.closePopupWindow();
+    } else {
+        if (count % 10 == 0) {
+            dom.writeToConsoleTA("Face not present, locking screen in " + (40 - count))
+        }
+        count += 2;
+    }
+
+    //Set to 30> when done testing
+    if (count == 10) {
+        window.popup.openPopupWindow();
+    }
+    if (count >= 30) {
+        window.ipc.lockScreen();
+        stopFaceDetection()
+    }
+
+    return count
 }
 
 function captureFacesWithAI(reference) {
@@ -160,6 +151,10 @@ function captureFacesWithAI(reference) {
 
 function updateVideoOverlay(canvas, faceData, displaySize) {
     faceData = faceapi.resizeResults(faceData, displaySize);
-    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    clearCanvas(canvas)
     faceapi.draw.drawDetections(canvas, faceData);
+}
+
+function clearCanvas(canvas) {
+    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
 }

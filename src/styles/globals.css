@@ -54,3 +54,8 @@ button:disabled {
   color: #808080;
   cursor: not-allowed;
 }
+
+.disabled-div {
+  pointer-events: none; 
+  opacity: 0.4;        
+}

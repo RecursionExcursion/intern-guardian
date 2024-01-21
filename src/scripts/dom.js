@@ -1,4 +1,5 @@
 import * as element from './elements.js'
+import { silentLoadImage } from './memory.js'
 import * as state from './state-params.js'
 
 export function setRunningStatus(isRunning) {
@@ -33,6 +34,7 @@ export function setMenuTabToDetection(isDetectionControlMenu) {
         enableDisable(element.referenceMenuTab, element.detectionsControlTab)
         enableReferenceImageView(false)
         resizeVideoFeed(state.videoSoloHeight)
+        silentLoadImage()
     } else {
         showHide(element.referenceSettingsWrapper, element.startStopWrapper)
         enableDisable(element.detectionsControlTab, element.referenceMenuTab)

@@ -29,3 +29,6 @@ export const consoleTextArea = document.getElementById("console");
 
 export const videoWrapper = document.getElementById("video-wrapper");
 export const imageWrapper = document.getElementById("image-wrapper");
+
+
+export const mainContainer = document.getElementById("mainContainer");

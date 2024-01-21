@@ -54,3 +54,33 @@ export function saveImage() {
   element.deleteButton.disabled = false
   state.setHasImage(true)
 }
+
+export function silentLoadImage() {
+  window.memory.loadCanvas().then((json) => {
+    if (json) {
+      state.setHasImage(true)
+      
+      let w = json.width;
+      let h = json.height;
+      
+      const ratio = w / h;
+      h = 250;
+      w = ratio * h;
+      
+      element.refImage.src = json.imageData;
+      element.refImage.width = w;
+      element.refImage.height = h;
+      
+      face.createRefImageCanvasOverlay()
+
+      element.deleteButton.disabled = false
+      dom.showHide(element.storedImageWrapper, element.noRefWrapper)
+
+    } else {
+      state.setHasImage(false)
+      element.deleteButton.disabled = true
+      dom.showHide(element.noRefWrapper, element.storedImageWrapper)
+    }
+  });
+  element.saveButton.disabled = true;
+}
