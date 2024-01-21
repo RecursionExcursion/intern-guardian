@@ -32,10 +32,12 @@ export function setMenuTabToDetection(isDetectionControlMenu) {
         showHide(element.startStopWrapper, element.referenceSettingsWrapper)
         enableDisable(element.referenceMenuTab, element.detectionsControlTab)
         enableReferenceImageView(false)
+        resizeVideoFeed(state.videoSoloHeight)
     } else {
         showHide(element.referenceSettingsWrapper, element.startStopWrapper)
         enableDisable(element.detectionsControlTab, element.referenceMenuTab)
         enableReferenceImageView(true)
+        resizeVideoFeed(state.videoPariedHeight)
     }
 }
 
@@ -61,6 +63,11 @@ export function getDisplaySize(element) {
     return { width: element.width, height: element.height }
 }
 
+export function resizeVideoFeed(dimension){
+    element.video.height = dimension
+    element.video.width = dimension * (state.videoAspectRatio)
+}
+
 function enableReferenceImageView(referenceMenuToggled) {
     if (referenceMenuToggled) {
         element.imageWrapper.classList.remove('hidden')
@@ -73,3 +80,4 @@ function enableDisable(enableButton, disableButton) {
     enableButton.disabled = false;
     disableButton.disabled = true;
 }
+

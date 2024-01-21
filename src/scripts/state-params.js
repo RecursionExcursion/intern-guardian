@@ -9,7 +9,11 @@ export let capturedCanvas;
 export let anyFaceMode = false
 export let hasImage = false
 
-export function setHasImage(bool){
+export const videoSoloHeight = 300
+export const videoPariedHeight = 200
+export const videoAspectRatio = (4 / 3)
+
+export function setHasImage(bool) {
     hasImage = bool
 }
 

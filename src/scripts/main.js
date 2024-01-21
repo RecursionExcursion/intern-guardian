@@ -1,15 +1,16 @@
 import * as element from './elements.js'
+import * as state from './state-params.js'
 import * as dom from './dom.js'
 import * as face from './face.js'
 import * as camera from './camera.js'
 import * as memory from './memory.js'
-import loadAllListeners from './listeners.js'
+import initializeListeners from './listeners.js'
 
 /* Initalization */
 (async () => {
   dom.writeToConsoleTA("Initializing....")
 
-  loadAllListeners();
+  initializeListeners();
 
   element.startButton.disabled = true
   element.consoleTextArea.disabled = true;
@@ -20,9 +21,7 @@ import loadAllListeners from './listeners.js'
 
   camera.initalizeCamera()
 
-  const dim = 200;
-  element.video.width = dim;
-  element.video.height = dim;
+  dom.resizeVideoFeed(state.videoSoloHeight)
 
   await face.loadModels();
 

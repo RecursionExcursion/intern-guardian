@@ -6,23 +6,22 @@ import * as face from './face.js'
 export function loadImage() {
   window.memory.loadCanvas().then((json) => {
     if (json) {
+      dom.writeToConsoleTA("Image retrieved from memory")
+      state.setHasImage(true)
+      
       let w = json.width;
       let h = json.height;
-
+      
       const ratio = w / h;
       h = 250;
       w = ratio * h;
-
+      
       element.refImage.src = json.imageData;
       element.refImage.width = w;
       element.refImage.height = h;
-      state.setHasImage(true);
-      dom.writeToConsoleTA("Image retrieved from memory")
+      
       face.createRefImageCanvasOverlay()
-
-      state.setHasImage(true)
-
-      dom.writeToConsoleTA("Image from memory analyzed")
+      dom.writeToConsoleTA("Image analyzed")
 
       element.deleteButton.disabled = false
       dom.showHide(element.storedImageWrapper, element.noRefWrapper)
