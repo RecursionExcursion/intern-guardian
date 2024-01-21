@@ -1,68 +1,112 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-container {
+    background: #26469e;
+    flex: 1;
+    overflow: auto;
+}
+
+
+.hidden {
+    display: none;
+}
+
+.setting-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 2%;
+}
+
+.setting-container .settings-toggle {
+    background-color: aqua;
+}
+
 .content-wrapper {
-  max-width: 100%;
-  min-height: 100%;
-  height: auto;
-  margin: auto;
-  background-color: rgb(218, 209, 209);
-  box-shadow: 2px 2px 5px #888888;
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
+    display: flex;
+    flex-direction: row;
+    background-color: red;
+    height: 70%;
+    padding: 5%;
+    gap: 5%;
+    /* add media q  */
 }
 
-.text-area-wrapper{
-  height: 95vh;
-  box-sizing: border-box;
-  margin: 5%;
+.content-wrapper .left-column {
+    background-color: beige;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex: 1;
+    padding: 5%;
 }
 
-.user-interface-wrapper {
-  margin: 5%;
-  width: 20%;
+.content-wrapper .right-column {
+    background-color: blueviolet;
+    flex: 1;
+
 }
 
-.face-scanner-wrapper,
-.user-interface-wrapper,
-.text-area-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 80%;
+.left-column .upper-container {
+    background-color: pink;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+
 }
 
-.face-scanner-wrapper *,
-.user-interface-wrapper *,
-.text-area-wrapper * {
-  height: 100%;
-  width: 100%;
+.upper-container .tab-btns {
+    display: flex;
+    gap: 2%;
+    margin-top: 2%;
 }
 
-.media-wrapper {
-  position: relative;
-  max-width: 65%;
-  border: 5px black solid;
+
+.upper-container .tab-btns > *{
+    flex: 1;
+    width: 100%;
+    margin-right: 0;
+
 }
 
-.label-green {
-  color: green;
+.upper-container .start-stop-wrapper,
+.upper-container .reference-settings {
+    margin-top: 5%;
 }
 
-.label-red {
-  color: red;
+.left-column .reference-settings {
+    background-color: orange;
 }
 
-.add-face-div {
-  display: flex;
-  flex-direction: column;
-  gap: 2%;
+.content-wrapper .lower-container {
+    background-color: greenyellow;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.button-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+textarea {
+    height: 80%;
+    width: 80%;
 }
 
+.video-container{
+    position: relative;
+}
+
+.image-container{
+    position: relative;
+}

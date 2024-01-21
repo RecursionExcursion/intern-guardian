@@ -38,6 +38,9 @@ contextBridge.exposeInMainWorld('memory', {
       });
       ipcRenderer.send("loadCanvasData")
     });
+  },
+  deleteStoredData: () => {
+    ipcRenderer.send('deleteData')
   }
 });
 

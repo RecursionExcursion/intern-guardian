@@ -6,20 +6,18 @@ let mainWindow;
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    // fullscreen: true,
-    // resizable: false,
     autoHideMenuBar: true,
     frame: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: true
+      nodeIntegration: true,
+
     },
   });
 
   mainWindow.loadFile(path.join(__dirname, "index.html"));
   mainWindow.webContents.openDevTools();
+  mainWindow.maximize()
 };
 
 app.whenReady().then(() => {
@@ -72,29 +70,26 @@ ipcMain.on("message", (event, message) => {
   console.dir(message)
 })
 
-const statePath = path.join(__dirname, "appstate", "user64.json")
+const appStatePath = path.join(__dirname, "appstate", "user64.json")
+
+function saveCanvasDataToMemory(canvasData) {
+  fs.writeFileSync(appStatePath, JSON.stringify(canvasData));
+}
 
 ipcMain.on("saveCanvas", (event, canvasData) => {
   saveCanvasDataToMemory(canvasData)
-  console.log('Saved')
 })
 
-function saveCanvasDataToMemory(canvasData) {
-  fs.writeFileSync(statePath, JSON.stringify(canvasData));
-}
+ipcMain.on("deleteData", (event) => { fs.unlinkSync(appStatePath); })
 
 ipcMain.on('loadCanvasData', (event) => {
-  console.log('Loading...')
-
-
   const loadedCanvasData = loadCanvasDataFromMemory();
-
   event.reply('canvasDataLoaded', loadedCanvasData);
 });
 
 function loadCanvasDataFromMemory() {
   try {
-    const rawData = fs.readFileSync(statePath, 'utf8');
+    const rawData = fs.readFileSync(appStatePath, 'utf8');
     const loadedCanvasData = JSON.parse(rawData);
     return loadedCanvasData;
   } catch (error) {

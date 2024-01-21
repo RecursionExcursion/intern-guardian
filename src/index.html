@@ -1,50 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 
 <head>
-  <meta charset="UTF-8" />
-  <title>Intern Guardian</title>
-  <script defer src="./face-api.min.js"></script>
-  <script type="module" defer src="./scripts/main.js"></script>
-  <link rel="stylesheet" href="./index.css" />
+    <meta charset="UTF-8" />
+    <title>Intern Guardian</title>
+    <script defer src="./face-api.min.js"></script>
+    <script type="module" defer src="./scripts/main.js"></script>
+    <link rel="stylesheet" href="./index.css" />
 </head>
 
-<body class="mainpage-body">
-  <div class="content-wrapper">
-    <div class="text-area-wrapper">
-      <textarea id="console" class="console"></textarea>
-    </div>
-    <div class="face-scanner-wrapper">
-      <div class="media-wrapper">
-        <video id="video" autoplay muted></video>
-        <canvas id="overlayCanvas" style="position: absolute; top: 0; left: 0;"></canvas>
-      </div>
-      <div class="media-wrapper">
-        <img id="image1" />
-        <canvas id="canvas1"></canvas>
-      </div>
-    </div>
-    <div class="user-interface-wrapper">
-      <div id="userInterface">
-        <div class="button-container">
-          <button id="startButton">Start</button>
-          <button id="stopButton">Stop</button>
+<body>
+    <div class="main-container">
+        <div class="setting-container">
+            <button id="toggleAnyFaceButton" class="setting-toggle">Anyone</button>
+            <button id="toggleMyFaceButton" class="setting-toggle">Only Me</button>
         </div>
-        <div class="label-wrapper-div">
-          <label id="appStatusText">Application running</label>
+        <div class="content-wrapper">
+            <div class="left-column">
+                <div class="upper-container">
+                    <div class="tab-btns">
+                        <button id="detectionsControlTab" class="start-stop-tab">Detenction Controls</button>
+                        <button id="referenceMenuTab" class="reference-tab">Reference Settings</button>
+                    </div>
+                    <div id="startStopWrapper" class="start-stop-wrapper">
+                        <button id="startButton" class="start-btn">
+                            <img class="play-icon">
+                            <span>Start</span>
+                        </button>
+                        <button id="stopButton" class="stop-icon">
+                            <img class="stop-icon" />
+                            <span>Stop</span>
+                        </button>
+                    </div>
+                    <div id="referenceSettingsWrapper" class="reference-settings hidden">
+                        <button id="captureButton">Capture Image</button>
+                        <button id="saveButton">Save</button>
+                        <button id="loadButton">Load</button>
+                        <button id="deleteButton">Delete</button>
+                        <button id="compareButton">Compare</button>
+                    </div>
+                </div>
+                <div class="lower-container">
+                    <textarea id="console" class="console"></textarea>
+                </div>
+            </div>
+            <div class="right-column">
+                <div id="video-wrapper" class="video-container">
+                    <video id="video" autoplay muted></video>
+                    <canvas id="videoOverlayCanvas" style="position: absolute; top: 0; left: 0;"></canvas>
+                </div>
+                <div id="image-wrapper" class="images-container">
+                    <div id="noRefWrapper" class="missing-reference">
+                        <img src="./public/images/givemeyourface.gif" id="bannerGif"
+                            alt="Optimus Prime taking The Fallen's face GIF" />
+                    </div>
+                    <div id="storedImageWrapper" class="image-container hidden">
+                        <img id="refImage" />
+                        <canvas id="refCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <div class="add-face-div">
-        <img id="bannerGif" alt="GIF Image" />
-
-        <div class="button-container">
-          <button id="captureButton">Capture Image</button>
-          <button id="saveButton">Save</button>
-          <button id="loadButton">Load</button>
-          <button id="compareButton">Compare</button>
-        </div>
-      </div>
     </div>
 </body>
 

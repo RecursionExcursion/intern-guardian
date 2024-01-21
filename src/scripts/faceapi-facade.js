@@ -60,10 +60,10 @@ function captureSnapshot() {
 
 
 export function mapFaceToCanvas(video, targetCanvas) {
-  window.msg.clogMsg(video.height);
-  window.msg.clogMsg(targetCanvas.height);
-  console.log(video.height)
-  console.log(targetCanvas.height)
+  // window.msg.clogMsg(video.height);
+  // window.msg.clogMsg(targetCanvas.height);
+  // console.log(video.height)
+  // console.log(targetCanvas.height)
 
   targetCanvas.width = video.width;
   targetCanvas.height = video.height;
