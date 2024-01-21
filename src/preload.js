@@ -3,26 +3,14 @@
 
 const { contextBridge, ipcRenderer } = require("electron");
 
-function openAddFaceWindow() {
-  ipcRenderer.send("open-addface-window");
-}
-
-
-function openPopupWindow() {
-  ipcRenderer.send("open-popup-window");
-}
-
-function closePopupWindow() {
-  ipcRenderer.send("close-popup-window");
-}
-
-let popUpBridge = {
-  openAddFaceWindow,
-  openPopupWindow,
-  closePopupWindow,
-};
-
-contextBridge.exposeInMainWorld("popup", popUpBridge);
+contextBridge.exposeInMainWorld("popup", {
+  closePopupWindow: () => {
+    ipcRenderer.send("close-popup-window")
+  },
+  openPopupWindow: () => {
+    ipcRenderer.send("open-popup-window");
+  }
+});
 
 contextBridge.exposeInMainWorld('ipc', {
   lockScreen: () => {
@@ -48,8 +36,19 @@ contextBridge.exposeInMainWorld('memory', {
       ipcRenderer.once('canvasDataLoadError', (event, errorMessage) => {
         reject(new Error(errorMessage));
       });
-
       ipcRenderer.send("loadCanvasData")
     });
+  },
+  deleteStoredData: () => {
+    ipcRenderer.send('deleteData')
   }
 });
+
+contextBridge.exposeInMainWorld('view', {
+  homeView: () => {
+    ipcRenderer.send("load-view", "/index")
+  },
+  faceCaptureView: () => {
+    ipcRenderer.send("load-view", "/pages/addface")
+  }
+})

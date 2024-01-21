@@ -6,13 +6,16 @@ let mainWindow;
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    // resizable: false,
     autoHideMenuBar: true,
+    frame: true,
+    width: 1200,
+    height: 800,
+    resizable: false,
+    maximizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: true
+      nodeIntegration: true,
+
     },
   });
 
@@ -66,52 +69,30 @@ ipcMain.on("close-popup-window", () => {
   }
 });
 
-
-ipcMain.on("open-addface-window", () => {
-  popupWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    show: true,
-    alwaysOnTop: true,
-    modal: true,
-    webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: true
-    },
-  });
-
-  popupWindow.loadFile(path.join(__dirname, "pages", "addface.html"));
-});
-
-
-
 ipcMain.on("message", (event, message) => {
-  console.log(message)
+  console.dir(message)
 })
 
-const statePath = path.join(__dirname, "appstate", "user64.json")
+const appStatePath = path.join(__dirname, "appstate", "user64.json")
+
+function saveCanvasDataToMemory(canvasData) {
+  fs.writeFileSync(appStatePath, JSON.stringify(canvasData));
+}
 
 ipcMain.on("saveCanvas", (event, canvasData) => {
   saveCanvasDataToMemory(canvasData)
-  console.log('Saved')
 })
 
-function saveCanvasDataToMemory(canvasData) {
-  fs.writeFileSync(statePath, JSON.stringify(canvasData));
-}
+ipcMain.on("deleteData", (event) => { fs.unlinkSync(appStatePath); })
 
 ipcMain.on('loadCanvasData', (event) => {
-console.log('Loading...')
-
-
   const loadedCanvasData = loadCanvasDataFromMemory();
-
   event.reply('canvasDataLoaded', loadedCanvasData);
 });
 
 function loadCanvasDataFromMemory() {
   try {
-    const rawData = fs.readFileSync(statePath, 'utf8');
+    const rawData = fs.readFileSync(appStatePath, 'utf8');
     const loadedCanvasData = JSON.parse(rawData);
     return loadedCanvasData;
   } catch (error) {
@@ -119,6 +100,3 @@ function loadCanvasDataFromMemory() {
     return null;
   }
 }
-
-
-

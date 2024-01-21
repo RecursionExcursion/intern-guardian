@@ -1,10 +1,25 @@
+:root {
+  --primary-blue: #03071e;
+  --primary-purple: #370617;
+  --dark-red: #6a040f;
+  --primary-red: #9d0208;
+  --light-red: #d00000;
+  --dark-orange: #dc2f02;
+  --primary-orange: #e85d04;
+  --dark-yellow: #f48c06;
+  --primary-yellow: #faa307;
+  --light-yellow: #ffba08;
+  --primary-white:#fffffc;
+}
+
 button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-  margin-right: 10px;
-  background-color: #3498db; /* Set your desired button background color */
-  color: #ffffff; /* Set your desired button text color */
+  background-color: #3498db;
+
+  color: #ffffff;
+ 
   border: none;
   border-radius: 4px;
 }
@@ -26,36 +41,21 @@ body {
   overflow: hidden;
 }
 
-.wrapper-div {
-  max-width: 800px;
-  height: -webkit-fill-available;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.button-container-div {
+  display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-}
-
-.button-container-div{
-    display: flex;
-    flex-direction: row;
-    justify-content: center; 
-    align-items: center;
-    margin: 20px;
-}
-
-.form-wrapper-div{
-    display: flex;
-    flex-direction: row;
-    justify-content: center; 
-    align-items: center;
-    margin: 20px;
+  margin: 20px;
 }
 
 button:disabled {
-    background-color: #d3d3d3; /* Light gray background */
-    color: #808080; /* Darker gray text */
-    cursor: not-allowed; /* Show not-allowed cursor */
-    /* Add any other styles you want for disabled buttons */
-  }
+  background-color: #d3d3d3;
+  color: #808080;
+  cursor: not-allowed;
+}
+
+.disabled-div {
+  pointer-events: none; 
+  opacity: 0.4;        
+}
