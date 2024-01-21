@@ -9,6 +9,9 @@ export let capturedCanvas;
 export let anyFaceMode = false
 export let hasImage = false
 
+export function setHasImage(bool){
+    hasImage = bool
+}
 
 export function updateFaceMode(bool) {
     anyFaceMode = bool

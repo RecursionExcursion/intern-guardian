@@ -3,10 +3,13 @@ import * as dom from './dom.js'
 import * as face from './face.js'
 import * as camera from './camera.js'
 import * as memory from './memory.js'
+import loadAllListeners from './listeners.js'
 
 /* Initalization */
 (async () => {
   dom.writeToConsoleTA("Initializing....")
+
+  loadAllListeners();
 
   element.startButton.disabled = true
   element.consoleTextArea.disabled = true;

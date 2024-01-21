@@ -8,6 +8,10 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     autoHideMenuBar: true,
     frame: true,
+    width: 1200,
+    height: 800,
+    resizable: false,
+    maximizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true,
@@ -17,7 +21,6 @@ const createWindow = () => {
 
   mainWindow.loadFile(path.join(__dirname, "index.html"));
   mainWindow.webContents.openDevTools();
-  mainWindow.maximize()
 };
 
 app.whenReady().then(() => {

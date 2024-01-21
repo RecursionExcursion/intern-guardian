@@ -1,7 +1,15 @@
 :root {
-  --primary-color: #3498db;
-  --secondary-color: #2ecc71;
-  --accent-color: #e74c3c;
+  --primary-blue: #03071e;
+  --primary-purple: #370617;
+  --dark-red: #6a040f;
+  --primary-red: #9d0208;
+  --light-red: #d00000;
+  --dark-orange: #dc2f02;
+  --primary-orange: #e85d04;
+  --dark-yellow: #f48c06;
+  --primary-yellow: #faa307;
+  --light-yellow: #ffba08;
+  --primary-white:#fffffc;
 }
 
 button {

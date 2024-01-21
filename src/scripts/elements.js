@@ -1,6 +1,9 @@
 export const video = document.getElementById("video");
 export const videoCanvas = document.getElementById("videoOverlayCanvas");
 
+export const refImage = document.getElementById("refImage");
+export const refCanvas = document.getElementById("refCanvas");
+
 export const startButton = document.getElementById("startButton");
 export const stopButton = document.getElementById("stopButton");
 export const appStatusText = document.getElementById("appStatusText");
@@ -22,10 +25,6 @@ export const referenceSettingsWrapper = document.getElementById("referenceSettin
 export const noRefWrapper = document.getElementById("noRefWrapper");
 export const storedImageWrapper = document.getElementById("storedImageWrapper");
 
-export const refImage = document.getElementById("refImage");
-export const refCanvas = document.getElementById("refCanvas");
-
-export const statusLabel = document.getElementById("statusLabel");
 export const consoleTextArea = document.getElementById("console");
 
 export const videoWrapper = document.getElementById("video-wrapper");
