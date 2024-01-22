@@ -53,16 +53,9 @@ export function silentLoadImage() {
     if (json) {
       state.setHasImage(true)
       
-      let w = json.width;
-      let h = json.height;
-      
-      const ratio = w / h;
-      h = 250;
-      w = ratio * h;
-      
       element.refImage.src = json.imageData;
-      element.refImage.width = w;
-      element.refImage.height = h;
+      element.refImage.height = state.refImageHeight;
+      element.refImage.width = state.refImageHeight * state.aspectRatio;
       
       face.createRefImageCanvasOverlay()
 
