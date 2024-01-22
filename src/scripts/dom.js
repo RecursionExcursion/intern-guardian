@@ -16,12 +16,12 @@ export function toggleModeToAnyFace(anyFaceOn) {
     if (anyFaceOn) {
         enableDisable(element.toggleMyFaceButton, element.toggleAnyFaceButton)
         state.updateFaceMode(true)
-        writeToConsoleTA("Set to [Any Face]")
+        writeToConsoleTA("Set to Any Face mode")
     } else {
         if (state.hasImage) {
             enableDisable(element.toggleAnyFaceButton, element.toggleMyFaceButton)
             state.updateFaceMode(false)
-            writeToConsoleTA("Set to [My Face]")
+            writeToConsoleTA("Set to My Face mode")
         } else {
             writeToConsoleTA("A image from memory must be analyzed first")
         }
