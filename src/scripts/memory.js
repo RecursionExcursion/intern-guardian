@@ -9,16 +9,9 @@ export function loadImage() {
       dom.writeToConsoleTA("Image retrieved from memory")
       state.setHasImage(true)
       
-      let w = json.width;
-      let h = json.height;
-      
-      const ratio = w / h;
-      h = 250;
-      w = ratio * h;
-      
       element.refImage.src = json.imageData;
-      element.refImage.width = w;
-      element.refImage.height = h;
+      element.refImage.height = state.refImageHeight;
+      element.refImage.width = state.refImageHeight * state.aspectRatio;
       
       face.createRefImageCanvasOverlay()
       dom.writeToConsoleTA("Image analyzed")
@@ -39,7 +32,7 @@ export function loadImage() {
 export function deleteStoredImage() {
   window.memory.deleteStoredData()
   dom.showHide(element.noRefWrapper, element.storedImageWrapper)
-  dom.writeToConsoleTA("Image emptied")
+  dom.writeToConsoleTA("Image folder emptied")
 }
 
 export function saveImage() {

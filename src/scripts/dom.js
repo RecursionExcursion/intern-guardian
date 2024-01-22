@@ -33,15 +33,15 @@ export function setMenuTabToDetection(isDetectionControlMenu) {
         showHide(element.startStopWrapper, element.referenceSettingsWrapper)
         enableDisable(element.referenceMenuTab, element.detectionsControlTab)
         enableReferenceImageView(false)
-        resizeMedia(element.video, state.videoSoloHeight, state.videoAspectRatio)
-        resizeMedia(element.videoCanvas, state.videoSoloHeight, state.videoAspectRatio)
+        resizeMedia(element.video, state.videoSoloHeight, state.aspectRatio)
+        resizeMedia(element.videoCanvas, state.videoSoloHeight, state.aspectRatio)
         silentLoadImage()
     } else {
         showHide(element.referenceSettingsWrapper, element.startStopWrapper)
         enableDisable(element.detectionsControlTab, element.referenceMenuTab)
         enableReferenceImageView(true)
-        resizeMedia(element.video, state.videoPariedHeight, state.videoAspectRatio)
-        resizeMedia(element.videoCanvas, state.videoPariedHeight, state.videoAspectRatio)
+        resizeMedia(element.video, state.videoPariedHeight, state.aspectRatio)
+        resizeMedia(element.videoCanvas, state.videoPariedHeight, state.aspectRatio)
     }
 }
 

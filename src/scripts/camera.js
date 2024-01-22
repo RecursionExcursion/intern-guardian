@@ -45,8 +45,8 @@ export function initalizeCamera() {
   function captureImage() {
     return new Promise((resolve) => {
       const canvas = document.createElement("canvas");
-      canvas.width = element.video.videoWidth;
-      canvas.height = element.video.videoHeight;
+      canvas.height = state.refImageHeight;
+      canvas.width = state.refImageHeight * state.aspectRatio;
       const ctx = canvas.getContext("2d");
       ctx.drawImage(element.video, 0, 0, canvas.width, canvas.height);
       resolve(canvas);

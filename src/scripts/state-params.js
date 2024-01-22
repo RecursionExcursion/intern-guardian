@@ -11,7 +11,9 @@ export let hasImage = false
 
 export const videoSoloHeight = 300
 export const videoPariedHeight = 200
-export const videoAspectRatio = (4 / 3)
+export const aspectRatio = (4 / 3)
+
+export const refImageHeight = 250
 
 export function setHasImage(bool) {
     hasImage = bool

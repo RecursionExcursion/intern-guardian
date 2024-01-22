@@ -84,7 +84,7 @@ async function startMyFaceDetection() {
     let count = 0
 
     state.setVideoOverlayInterval(setInterval(async () => {
-        
+
         const displaySize = dom.getDisplaySize(element.videoCanvas)
         faceapi.matchDimensions(element.videoCanvas, displaySize)
 
@@ -123,6 +123,9 @@ async function startMyFaceDetection() {
 function screenLock(bool, count) {
 
     if (bool) {
+        if (count > 0) {
+            dom.writeToConsoleTA("Face detected")
+        }
         count = 0;
         closePopup()
     } else {
